@@ -1,13 +1,12 @@
 const express = require("express");
 const mongoose = require("mongoose");
 require("dotenv").config();
+const router = require("./Routes/UserRoutes.js");
 
 const app = express();
 
 //Middleware
-app.use("/", (req, res, next) => {
-    res.send("It is working");
-});
+app.use("/users", router);
 
 // MongoDB connection
 mongoose
