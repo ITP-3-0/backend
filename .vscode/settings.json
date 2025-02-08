@@ -28,7 +28,7 @@
     "git.checkoutType": [],
     "git.defaultCloneDirectory": "",
     "workbench.startupEditor": "none",
-    "workbench.iconTheme": "vscode-icons",
+    "workbench.iconTheme": "material-icon-theme",
     "editor.formatOnSave": true,
     "tabnine.experimentalAutoImports": true,
     "[javascript]": {
