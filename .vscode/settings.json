@@ -1,0 +1,95 @@
+{
+    "C_Cpp.updateChannel": "Insiders",
+    "files.autoSave": "afterDelay",
+    "editor.colorDecorators": true,
+    "code-runner.runInTerminal": true,
+    "emulator.androidColdBoot": true,
+    "emulator.emulatorPathWindows": "C:\\Users\\USER\\AppData\\Local\\Android\\Sdk\\emulator",
+    "[dart]": {
+        "editor.formatOnSave": true,
+        "editor.formatOnType": true,
+        "editor.rulers": [80],
+        "editor.selectionHighlight": false,
+        "editor.suggest.snippetsPreventQuickSuggestions": false,
+        "editor.suggestSelection": "first",
+        "editor.tabCompletion": "onlySnippets",
+        "editor.wordBasedSuggestions": "off"
+    },
+    "editor.cursorBlinking": "phase",
+    "terminal.integrated.rendererType": "dom",
+    "editor.suggestSelection": "first",
+    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+    "workbench.editorAssociations": {
+        "*.ipynb": "jupyter.notebook.ipynb"
+    },
+    "kite.showWelcomeNotificationOnStartup": false,
+    "diffEditor.renderSideBySide": false,
+    "github.gitAuthentication": false,
+    "git.checkoutType": [],
+    "git.defaultCloneDirectory": "",
+    "workbench.startupEditor": "none",
+    "workbench.iconTheme": "vscode-icons",
+    "editor.formatOnSave": true,
+    "tabnine.experimentalAutoImports": true,
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[html]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[json]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "git.enableSmartCommit": true,
+    "git.autofetch": true,
+    "git.confirmSync": false,
+    "terminal.integrated.defaultProfile.windows": "Git Bash",
+    "terminal.integrated.profiles.windows": {
+        "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe (migrated)": {
+            "path": "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+            "args": []
+        }
+    },
+    "workbench.colorTheme": "One Dark Pro Darker",
+    "[jsonc]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "editor.inlineSuggest.enabled": true,
+    "editor.cursorSmoothCaretAnimation": "on",
+    "github.copilot.enable": {
+        "*": true,
+        "yaml": true,
+        "plaintext": true,
+        "markdown": true
+    },
+    "bracketPairColorizer.depreciation-notice": false,
+    "editor.linkedEditing": true,
+    "explorer.confirmDragAndDrop": false,
+    "[css]": {
+        "editor.defaultFormatter": "vscode.css-language-features"
+    },
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "npm.keybindingsChangedWarningShown": true,
+    "react-native-tools.showUserTips": false,
+    "editor.accessibilitySupport": "off",
+    "[python]": {
+        "editor.formatOnType": true,
+        "editor.defaultFormatter": "ms-python.autopep8"
+    },
+    "window.zoomLevel": 1,
+    "editor.stickyScroll.enabled": true,
+    "python.formatting.provider": "none",
+    "github.copilot.advanced": {},
+    "[php]": {
+        "editor.defaultFormatter": "DEVSENSE.phptools-vscode"
+    },
+    "prisma.showPrismaDataPlatformNotification": false,
+    "editor.lineHeight": 2,
+    "editor.wordWrapColumn": 160,
+    "prettier.tabWidth": 4,
+    "redhat.telemetry.enabled": false,
+    "git.openRepositoryInParentFolders": "never",
+    "prettier.printWidth": 150,
+    "editor.bracketPairColorization.enabled": false,
+    "diffEditor.hideUnchangedRegions.enabled": true
+}
