@@ -6,7 +6,10 @@ const router = require("./Routes/UserRoutes.js");
 const app = express();
 
 //Middleware
+<<<<<<< HEAD
 app.use(express.json());
+=======
+>>>>>>> 877ed9eaf9a23c2a416d4e57033ff26834e36fe1
 app.use("/users", router);
 
 // MongoDB connection
