@@ -63,9 +63,53 @@ This ticketing system provides a platform for managing support tickets with mult
 - PUT /api/users/:id - Update user
 - DELETE /api/users/:id - Delete user
 
+### Forum Endpoints
+- GET /api/forum - Get all forum posts (with filtering and pagination)
+- GET /api/forum/:postId - Get single forum post with comments
+- POST /api/forum - Create new forum post
+- POST /api/forum/:postId/comments - Add comment to post
+- POST /api/forum/:postId/like - Toggle like on post
+- POST /api/forum/:postId/sticky - Toggle sticky status (admin only)
+- POST /api/forum/:postId/lock - Toggle lock status (admin only)
+
+#### Forum Query Parameters
+- category: Filter posts by category
+- tag: Filter posts by tag
+- page: Page number for pagination
+- limit: Number of posts per page
+
+#### Forum Categories
+- general
+- technical
+- feature-request
+- bug-report
+- announcement
+
+### Notification Endpoints
+- GET /api/notifications - Get user's notifications (with filtering)
+- POST /api/notifications - Create new notification (admin only)
+- POST /api/notifications/:notificationId/read - Mark notification as read
+- POST /api/notifications/read-all - Mark all notifications as read
+- DELETE /api/notifications/:notificationId - Delete notification (admin only)
+- GET /api/notifications/stats - Get notification statistics (admin only)
+
+#### Notification Query Parameters
+- page: Page number for pagination
+- limit: Number of notifications per page
+- type: Filter by notification type (ticket, forum, system, alert)
+- read: Filter by read status (true/false)
+
+#### Notification Types
+- ticket: Ticket-related notifications
+- forum: Forum-related notifications
+- system: System notifications
+- alert: Important alerts
+
+#### Notification Priorities
+- low
+- medium
+- high
+- urgent
+
 ## Setup Instructions
 1. Install dependencies: `npm install`
-2. Set up environment variables in .env file
-3. Start the server: `npm start`
-
-## Environment Variables 

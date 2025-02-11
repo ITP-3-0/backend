@@ -1,30 +1,41 @@
 const Ticket = require("../Models/TicketModel");
 const User = require("../Models/UserModel");
+const { getAssignmentForClient } = require("./AgentAssignmentController");
 const sendEmail = require("../utils/emailService");
 
-// Create a new ticket
+// Modified createTicket function
 const createTicket = async (req, res) => {
     try {
         const { title, description, category, priority } = req.body;
+        const creator = await User.findById(req.user.id);
+
+        // Get agent assignment for the ticket creator
+        const assignment = await getAssignmentForClient(creator.username);
+        if (!assignment) {
+            return res.status(400).json({ 
+                message: "No agent assigned for this user pattern" 
+            });
+        }
+
         const ticket = new Ticket({
             title,
             description,
             category,
             priority,
-            createdBy: req.user.id // Assuming you have authentication middleware
+            createdBy: req.user.id,
+            assignedTo: assignment.l1Agent // Automatically assign to L1 agent
         });
 
         await ticket.save();
 
-        // Notify L1 agents
-        const l1Agents = await User.find({ role: 'agent_l1' });
-        l1Agents.forEach(agent => {
-            agent.notifications.push({
-                message: `New ticket created: ${title}`
-            });
-            agent.save();
-            sendEmail(agent.email, 'New Ticket Created', `A new ticket has been created: ${title}`);
+        // Notify assigned L1 agent
+        const l1Agent = await User.findById(assignment.l1Agent);
+        l1Agent.notifications.push({
+            message: `New ticket assigned: ${title}`
         });
+        await l1Agent.save();
+        sendEmail(l1Agent.email, 'New Ticket Assigned', 
+            `A new ticket has been assigned to you: ${title}`);
 
         res.status(201).json(ticket);
     } catch (error) {
@@ -65,29 +76,44 @@ const addResponse = async (req, res) => {
     }
 };
 
-// Escalate ticket
+// Modified escalateTicket function
 const escalateTicket = async (req, res) => {
     try {
         const { ticketId } = req.params;
-        const ticket = await Ticket.findById(ticketId);
+        const { escalationReason } = req.body;
+        
+        const ticket = await Ticket.findById(ticketId)
+            .populate('createdBy', 'username');
         
         if (!ticket) {
             return res.status(404).json({ message: "Ticket not found" });
         }
 
+        // Get agent assignment for the ticket creator
+        const assignment = await getAssignmentForClient(ticket.createdBy.username);
+        if (!assignment) {
+            return res.status(400).json({ 
+                message: "No L2 agent assignment found" 
+            });
+        }
+
+        // Update ticket
         ticket.status = 'escalated';
+        ticket.assignedTo = assignment.l2Agent;
+        ticket.responses.push({
+            responder: req.user.id,
+            message: `Ticket escalated to L2. Reason: ${escalationReason}`
+        });
         await ticket.save();
 
-        // Notify L2 agents
-        const l2Agents = await User.find({ role: 'agent_l2' });
-        l2Agents.forEach(agent => {
-            agent.notifications.push({
-                message: `Ticket escalated: ${ticket.title}`
-            });
-            agent.save();
-            sendEmail(agent.email, 'Ticket Escalated', 
-                `A ticket has been escalated: ${ticket.title}`);
+        // Notify L2 agent
+        const l2Agent = await User.findById(assignment.l2Agent);
+        l2Agent.notifications.push({
+            message: `Ticket escalated to you: ${ticket.title}`
         });
+        await l2Agent.save();
+        sendEmail(l2Agent.email, 'Ticket Escalated', 
+            `A ticket has been escalated to you: ${ticket.title}`);
 
         res.status(200).json(ticket);
     } catch (error) {
@@ -95,7 +121,7 @@ const escalateTicket = async (req, res) => {
     }
 };
 
-// Get all tickets (with filtering)
+// Modified getTickets function
 const getTickets = async (req, res) => {
     try {
         const { status, priority, category } = req.query;
@@ -108,12 +134,16 @@ const getTickets = async (req, res) => {
         // If user is client, only show their tickets
         if (req.user.role === 'client') {
             filter.createdBy = req.user.id;
+        } 
+        // If user is L1 or L2 agent, only show assigned tickets
+        else if (['agent_l1', 'agent_l2'].includes(req.user.role)) {
+            filter.assignedTo = req.user.id;
         }
 
         const tickets = await Ticket.find(filter)
-            .populate('createdBy', 'name email')
-            .populate('assignedTo', 'name email')
-            .populate('responses.responder', 'name email');
+            .populate('createdBy', 'name username')
+            .populate('assignedTo', 'name username')
+            .populate('responses.responder', 'name username');
 
         res.status(200).json(tickets);
     } catch (error) {
