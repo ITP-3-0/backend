@@ -1,6 +1,3 @@
-I'll create a database documentation that explains the relationships between different collections and their schema structures.
-
-````markdown:database_documentation.md
 # Database Documentation
 
 ## Database Schema and Relationships
