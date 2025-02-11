@@ -283,5 +283,4 @@ This documentation provides a comprehensive overview of:
 5. Data integrity rules
 6. Performance considerations
 
-Would you like me to expand on any particular section or add additional information?
 ```
