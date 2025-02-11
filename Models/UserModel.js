@@ -9,6 +9,12 @@ const UserSchema = new Schema({
     username: {
         type: String,
         required: true,
+        unique: true
+    },
+    email: {
+        type: String,
+        required: true,
+        unique: true
     },
     password: {
         type: String,
@@ -16,8 +22,20 @@ const UserSchema = new Schema({
     },
     role: {
         type: String,
+        enum: ['client', 'agent_l1', 'agent_l2', 'admin'],
         required: true,
     },
+    notifications: [{
+        message: String,
+        read: {
+            type: Boolean,
+            default: false
+        },
+        createdAt: {
+            type: Date,
+            default: Date.now
+        }
+    }]
 });
 
 module.exports = mongoose.model("UserModel", UserSchema);
