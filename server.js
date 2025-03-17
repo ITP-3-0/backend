@@ -1,7 +1,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
 require("dotenv").config();
-const router = require("./Routes/UserRoutes.js");
+const userRouter = require("./Routes/UserRoutes.js");
+const notificationRouter = require("./Routes/NotificationRoutes.js");
 
 const app = express();
 
@@ -37,7 +38,8 @@ app.get("/", (req, res) => {
     `);
 });
 
-app.use("/users", router);
+app.use("/users", userRouter);
+app.use("/notifications", notificationRouter);
 
 // MongoDB Connection
 mongoose

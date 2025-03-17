@@ -14,6 +14,7 @@ const NotificationSchema = new Schema({
         type: String,
         enum: ["ticket", "forum", "system", "alert"],
         required: true,
+        default: "alert",
     },
     priority: {
         type: String,
