@@ -6,13 +6,14 @@ const userRouter = require("./Routes/UserRoutes.js");
 const notificationRouter = require("./Routes/NotificationRoutes.js");
 const ticketRouter = require("./Routes/RaisingRoutes.js");
 
-
 const app = express();
 
 // Middleware
 app.use(express.json());
 app.use("/users", userRouter);
 app.use("/tickets", ticketRouter);
+const { exec } = require("child_process");
+
 
 app.get("/", (req, res) => {
     res.send(`
@@ -42,6 +43,26 @@ app.get("/", (req, res) => {
         </html>
     `);
 });
+app.post("/github-webhook", (req, res) => {
+    console.log("Received webhook data:", req.body);
+
+    const branch = req.body.ref;
+    if (branch === "refs/heads/master") {
+        // Handle the update logic
+        console.log("🔄 Change detected on master branch.");
+
+        exec("git pull origin master && npm install && pm2 restart backend-app", (err, stdout, stderr) => {
+            if (err) {
+                console.error(`❌ Error: ${err.message}`);
+                return res.status(500).send("Error updating.");
+            }
+            console.log(`✅ Git Pull Output: ${stdout}`);
+            res.status(200).send("Updated successfully.");
+        });
+    } else {
+        res.status(400).send("Not master branch.");
+    }
+});
 
 app.use("/users", userRouter);
 app.use("/notifications", notificationRouter);
@@ -55,12 +76,10 @@ mongoose
     .then(() => {
         app.listen(process.env.PORT, () => {
             console.log(`🚀 Server is running on: http://localhost:${process.env.PORT}`);
-
         });
     })
     .catch((err) => {
         console.error("❌ MongoDB Connection Error:", err);
 
-        process.exit(1); 
-
+        process.exit(1);
     });
