@@ -24,6 +24,6 @@ app.post("/github-webhook", (req, res) => {
 });
 
 // Start the webhook server
-app.listen(3000, () => {
+app.listen(5000, () => {
     console.log("🚀 Webhook server running on port 5000");
 });
