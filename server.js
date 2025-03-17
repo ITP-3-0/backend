@@ -60,7 +60,7 @@ app.post("/github-webhook", (req, res) => {
             res.status(200).send("Updated successfully.");
         });
     } else {
-        res.status(400).send("Not master branch.");
+        res.status(200).send("Not master branch.");
     }
 });
 
