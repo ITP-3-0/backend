@@ -16,6 +16,10 @@ const NotificationSchema = new Schema({
         required: true,
         default: "alert",
     },
+    isEmailable: {
+        type: Boolean,
+        default: false,
+    },
     priority: {
         type: String,
         enum: ["low", "medium", "high", "urgent"],

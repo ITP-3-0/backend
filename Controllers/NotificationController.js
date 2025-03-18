@@ -1,4 +1,6 @@
 const Notification = require("../Models/NotificationsModel");
+const sendEmail = require("../Utils/emailService");
+const User = require("../Models/UserModel");
 
 // display all notifications
 const getAllNotifications = async (req, res, next) => {
@@ -19,18 +21,55 @@ const getAllNotifications = async (req, res, next) => {
 
 // data insertion
 const addNotification = async (req, res, next) => {
-    const { title, message } = req.body;
+    const { title, message, type, isEmailable, priority, targetUsers, targetRoles } = req.body;
     let notification;
+
     try {
-        notification = new Notification({ title, message });
+        // Create a new notification
+        notification = new Notification({
+            title,
+            message,
+            type,
+            isEmailable,
+            priority,
+            targetUsers,
+            targetRoles,
+        });
         await notification.save();
+
+        // Send email alerts if `isEmailable` is true
+        if (isEmailable) {
+            let recipients = [];
+
+            // Fetch email addresses of target users
+            if (targetUsers && targetUsers.length > 0) {
+                const users = await User.find({ _id: { $in: targetUsers } });
+                recipients = users.map((user) => user.username); // Assuming `username` is the email
+            }
+
+            // Fetch email addresses of users with target roles
+            if (targetRoles && targetRoles.length > 0) {
+                const users = await User.find({ role: { $in: targetRoles } });
+                recipients = [...recipients, ...users.map((user) => user.username)];
+            }
+
+            // Remove duplicate email addresses
+            recipients = [...new Set(recipients)];
+
+            // Send emails to all recipients
+            const emailSubject = `New Notification: ${title}`;
+            const emailMessage = `You have a new notification:\n\n${message}`;
+            for (const recipient of recipients) {
+                await sendEmail(recipient, emailSubject, emailMessage);
+            }
+        }
     } catch (err) {
         console.log(err);
+        return res.status(500).json({ message: "Error creating notification", error: err.message });
     }
 
-    // not insert notification
     if (!notification) {
-        res.status(404).json({ message: "Unable to add notification" });
+        return res.status(404).json({ message: "Unable to add notification" });
     }
 
     return res.status(200).json(notification);
@@ -144,8 +183,6 @@ const markNotificationAsRead = async (req, res, next) => {
 
     return res.status(200).json(notification);
 };
-
-
 
 module.exports = {
     getAllNotifications,
