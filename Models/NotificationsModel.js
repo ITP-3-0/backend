@@ -46,11 +46,12 @@ const NotificationSchema = new Schema({
         },
     ],
     createdAt: {
-        type: Date,
+        type: Date, 
         default: Date.now,
     },
     expiresAt: {
         type: Date,
+        default: Date.now() + 365 * 24 * 60 * 60 * 1000
     },
 });
 
