@@ -28,7 +28,7 @@ const sendEmail = async (to, subject, text, templateData) => {
     html = html
         .replace("{{title}}", templateData.title || "No Title")
         .replace("{{message}}", templateData.message || "No Message")
-        .replace("{{priority}}", templateData.priority || "No Priority");
+        .replace("{{priority}}", templateData.priority || "low");
 
     const mailOptions = {
         from: '"Notification System" <no-reply@example.com>',
@@ -81,9 +81,7 @@ const addNotification = async (req, res, next) => {
                 recipients = [...recipients, ...users.map((user) => user.email)];
             }
 
-            // Remove duplicate email addresses
             recipients = [...new Set(recipients)];
-            console.log("Recipients:", recipients);
 
             // Check if recipients array is empty
             if (recipients.length === 0) {
