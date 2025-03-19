@@ -27,8 +27,7 @@ const NotificationSchema = new Schema({
     },
     targetUsers: [
         {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "UserModel",
+            type: String, // Store usernames instead of ObjectId
         },
     ],
     targetRoles: [
@@ -40,8 +39,7 @@ const NotificationSchema = new Schema({
     read: [
         {
             user: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "UserModel",
+                type: String, // Store usernames instead of ObjectId
             },
             readAt: {
                 type: Date,
@@ -50,12 +48,12 @@ const NotificationSchema = new Schema({
         },
     ],
     createdAt: {
-        type: Date, 
+        type: Date,
         default: Date.now,
     },
     expiresAt: {
         type: Date,
-        default: Date.now() + 365 * 24 * 60 * 60 * 1000
+        default: Date.now() + 365 * 24 * 60 * 60 * 1000, // 1 year from creation
     },
 });
 
