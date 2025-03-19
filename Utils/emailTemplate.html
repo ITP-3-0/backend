@@ -1,0 +1,53 @@
+<html>
+    <head>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f4f4f4;
+                padding: 20px;
+                text-align: center;
+            }
+            .email-container {
+                max-width: 600px;
+                background: white;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+                margin: auto;
+            }
+            h1 {
+                color: #333;
+            }
+            p {
+                font-size: 16px;
+                color: #555;
+            }
+            .priority-indicator {
+                height: 8px;
+                width: 100%;
+                border-radius: 5px;
+                margin-bottom: 15px;
+            }
+            /* Priority Styles */
+            .low {
+                background-color: #2ecc71; /* Green */
+            }
+            .medium {
+                background-color: #f1c40f; /* Yellow */
+            }
+            .high {
+                background-color: #e67e22; /* Orange */
+            }
+            .urgent {
+                background-color: #e74c3c; /* Red */
+            }
+        </style>
+    </head>
+    <body>
+        <div class="email-container">
+            <div class="priority-indicator {{priority}}"></div>
+            <h1>{{title}}</h1>
+            <p>{{message}}</p>
+        </div>
+    </body>
+</html>

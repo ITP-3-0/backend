@@ -1,5 +1,6 @@
 const User = require("../Models/UserModel");
-//display all users
+
+// Display all users
 const getAllUsers = async (req, res, next) => {
     let Users;
     try {
@@ -16,20 +17,21 @@ const getAllUsers = async (req, res, next) => {
     return res.status(200).json(Users);
 };
 
-//data insertion
+// Data insertion
 const addUser = async (req, res, next) => {
-    const { name, username, password, role } = req.body;
+    const { name, username, password, email, role } = req.body;
     let user;
     try {
-        user = new User({ name, username, password, role });
+        user = new User({ name, username, password, email, role });
         await user.save();
     } catch (err) {
         console.log(err);
+        return res.status(500).json({ message: "Error adding user", error: err.message });
     }
 
-    //not insert user
+    // If user is not created
     if (!user) {
-        res.status(404).json({ message: "Unable to add user" });
+        return res.status(404).json({ message: "Unable to add user" });
     }
 
     return res.status(200).json(user);
@@ -53,21 +55,21 @@ const getUserById = async (req, res, next) => {
     return res.status(200).json(user);
 };
 
-//update a user
+// Update a user
 const updateUser = async (req, res, next) => {
     const userId = req.params.id;
-    const { name, username, password, role } = req.body;
+    const { name, username, password, email, role } = req.body;
     let user;
     try {
-        user = await User.findByIdAndUpdate(userId, { name, username, password, role });
-        user = await user.save();
+        user = await User.findByIdAndUpdate(userId, { name, username, password, email, role }, { new: true, runValidators: true });
     } catch (err) {
         console.log(err);
+        return res.status(500).json({ message: "Error updating user", error: err.message });
     }
 
-    // If no user is found, return a 404 status code
+    // If no user is found
     if (!user) {
-        res.status(404).json({ message: "No user found" });
+        return res.status(404).json({ message: "No user found" });
     }
 
     return res.status(200).json(user);
@@ -91,8 +93,10 @@ const deleteUser = async (req, res, next) => {
     return res.status(200).json({ message: "User deleted successfully" });
 };
 
-exports.getUserById = getUserById;
-exports.getAllUsers = getAllUsers;
-exports.addUser = addUser;
-exports.updateUser = updateUser;
-exports.deleteUser = deleteUser;
+module.exports = {
+    getAllUsers,
+    addUser,
+    getUserById,
+    updateUser,
+    deleteUser,
+};
