@@ -1,13 +1,13 @@
 const express = require("express");
 const mongoose = require("mongoose");
-
+const cors = require("cors");
 require("dotenv").config();
 const userRouter = require("./Routes/UserRoutes.js");
 const notificationRouter = require("./Routes/NotificationRoutes.js");
 const ticketRouter = require("./Routes/RaisingRoutes.js");
 
 const app = express();
-
+app.use(cors());
 // Middleware
 app.use(express.json());
 app.use("/users", userRouter);
@@ -43,6 +43,7 @@ app.get("/", (req, res) => {
         </html>
     `);
 });
+
 app.post("/github-webhook", (req, res) => {
     console.log("Received webhook data:", req.body);
 
@@ -64,9 +65,8 @@ app.post("/github-webhook", (req, res) => {
     }
 });
 
-
 // MongoDB Connection 
-mongoose 
+mongoose
     .connect(process.env.DB_URI)
     .then(() => {
         console.log("✅ Connected to MongoDB");
@@ -78,6 +78,6 @@ mongoose
     })
     .catch((err) => {
         console.error("❌ MongoDB Connection Error:", err);
-        process.exit(1); 
+        process.exit(1);
 
     });

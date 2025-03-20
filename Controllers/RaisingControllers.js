@@ -1,3 +1,4 @@
+const mongoose = require("mongoose"); // Add this import for ObjectId validation
 const Ticket = require("../Models/RaisingModel");
 
 // Get All Tickets
@@ -62,6 +63,12 @@ const addTicket = async (req, res, next) => {
 const getById = async (req, res, next) => {
     const id = req.params.id;
 
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({
+            message: "Invalid ticket ID format",
+        });
+    }
+
     try {
         const ticket = await Ticket.findById(id);
 
@@ -70,8 +77,10 @@ const getById = async (req, res, next) => {
                 message: "Ticket not found",
             });
         }
+        console.log("Ticket found:", ticket);
 
         return res.status(200).json({ ticket });
+
     } catch (err) {
         console.error(err);
         return res.status(500).json({
@@ -84,6 +93,13 @@ const getById = async (req, res, next) => {
 // Update Ticket
 const updateTicket = async (req, res, next) => {
     const id = req.params.id;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({
+            message: "Invalid ticket ID format",
+        });
+    }
+
     const { title, description, priority, status, responses, documents } = req.body;
 
     try {
@@ -121,6 +137,12 @@ const updateTicket = async (req, res, next) => {
 // Delete Ticket
 const deleteTicket = async (req, res, next) => {
     const id = req.params.id;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({
+            message: "Invalid ticket ID format",
+        });
+    }
 
     try {
         const ticket = await Ticket.findByIdAndDelete(id);
