@@ -19,11 +19,12 @@ const getAllUsers = async (req, res, next) => {
 
 // Data insertion
 const addUser = async (req, res, next) => {
-    const { name, username, password, email, role } = req.body;
+    const { _id, username, censusNo, email, role } = req.body;
     let user;
     try {
-        user = new User({ name, username, password, email, role });
+        user = new User({ _id, username, censusNo, email, role });
         await user.save();
+        console.log("User added successfully");
     } catch (err) {
         console.log(err);
         return res.status(500).json({ message: "Error adding user", error: err.message });

@@ -14,7 +14,6 @@ app.use("/users", userRouter);
 app.use("/tickets", ticketRouter);
 app.use("/notifications", notificationRouter);
 
-
 app.get("/", (req, res) => {
     res.send(`
         <html>
@@ -64,9 +63,8 @@ app.post("/github-webhook", (req, res) => {
     }
 });
 
-
-// MongoDB Connection 
-mongoose 
+// MongoDB Connection
+mongoose
     .connect(process.env.DB_URI)
     .then(() => {
         console.log("✅ Connected to MongoDB");
@@ -78,6 +76,5 @@ mongoose
     })
     .catch((err) => {
         console.error("❌ MongoDB Connection Error:", err);
-        process.exit(1); 
-
+        process.exit(1);
     });
