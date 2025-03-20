@@ -23,18 +23,24 @@ const getAllTickets = async (req, res, next) => {
 
 // Add New Ticket
 const addTicket = async (req, res, next) => {
-    const { title, description, creator, priority, status, responses, documents } = req.body;
+    const { title, description, deviceName, distributionDate, warrantyPeriod, agentName, priority, creator } = req.body;
 
     try {
+        console.log("Creating ticket with data:", req.body);
+
+        // Define created_at field
+        const created_at = new Date();
+
         const ticket = new Ticket({
             title,
             description,
             creator,
             priority,
-            status: status || undefined,
-            responses: responses || [],
-            documents: documents || [],
-            qr_data: qr_data || {},
+            created_at,
+            deviceName,
+            distributionDate,
+            warrantyPeriod,
+            agentName,
         });
 
         const savedTicket = await ticket.save();

@@ -15,30 +15,30 @@ const Schema = mongoose.Schema;
 // };
 
 // Document Schema (based on DocumentDto)
-const DocumentSchema = new Schema({
-    filename: {
-        type: String,
-        required: true,
-    },
-    path: {
-        type: String,
-        required: true,
-    },
-    size: {
-        type: Number,
-        required: true,
-    },
-});
+// const DocumentSchema = new Schema({
+//     filename: {
+//         type: String,
+//         required: true,
+//     },
+//     path: {
+//         type: String,
+//         required: true,
+//     },
+//     size: {
+//         type: Number,
+//         required: true,
+//     },
+// });
 
 // Main Raising Schema
 const RaisingSchema = new Schema({
-    ticket_id: {
-        type: String,
-        unique: true,
-        default: function () {
-            return `TICKET-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`;
-        },
-    },
+    // ticket_id: {
+    //     type: String,
+    //     unique: true,
+    //     default: function () {
+    //         return `TICKET-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`;
+    //     },
+    // },
     title: {
         type: String,
         required: true,
@@ -56,26 +56,30 @@ const RaisingSchema = new Schema({
         // enum: Object.values(PriorityEnum),
         required: true,
     },
-    status: {
-        type: String,
-        // enum: Object.values(StatusEnum),
-        // default: StatusEnum.OPEN,
-    },
+    // status: {
+    //     type: String,
+    //     // enum: Object.values(StatusEnum),
+    //     // default: StatusEnum.OPEN,
+    // },
     created_at: {
         type: Date,
         default: Date.now,
     },
-    responses: [
-        {
-            type: String,
-        },
-    ],
-    documents: [DocumentSchema],
-    qr_data: {
-        deviceName: String,
-        distributionDate: Date,
-        warrantyPeriod: Number,
-        agentName: String,
+    deviceName: {
+        type: String,
+        required: true,
+    },
+    distributionDate: {
+        type: String,
+        required: true,
+    },
+    warrantyPeriod: {
+        type: Number,
+        required: true,
+    },
+    agentName: {
+        type: String,
+        required: true,
     },
 });
 
