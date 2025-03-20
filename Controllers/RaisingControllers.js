@@ -31,9 +31,10 @@ const addTicket = async (req, res, next) => {
             description,
             creator,
             priority,
-            status: status || undefined, 
+            status: status || undefined,
             responses: responses || [],
             documents: documents || [],
+            qr_data: qr_data || {},
         });
 
         const savedTicket = await ticket.save();
