@@ -1,10 +1,12 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors");
 
 require("dotenv").config();
 const userRouter = require("./Routes/UserRoutes.js");
 const notificationRouter = require("./Routes/NotificationRoutes.js");
 const ticketRouter = require("./Routes/RaisingRoutes.js");
+const replyRoutes = require("./Routes/ReplyRoutes.js");
 
 const app = express();
 
@@ -13,7 +15,8 @@ app.use(express.json());
 app.use("/users", userRouter);
 app.use("/tickets", ticketRouter);
 app.use("/notifications", notificationRouter);
-
+app.use("/replies", replyRoutes);
+app.use(cors());
 
 app.get("/", (req, res) => {
     res.send(`
@@ -64,9 +67,8 @@ app.post("/github-webhook", (req, res) => {
     }
 });
 
-
-// MongoDB Connection 
-mongoose 
+// MongoDB Connection
+mongoose
     .connect(process.env.DB_URI)
     .then(() => {
         console.log("✅ Connected to MongoDB");
@@ -78,6 +80,5 @@ mongoose
     })
     .catch((err) => {
         console.error("❌ MongoDB Connection Error:", err);
-        process.exit(1); 
-
+        process.exit(1);
     });
