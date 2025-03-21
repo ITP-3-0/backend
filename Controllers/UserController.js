@@ -59,10 +59,10 @@ const getUserById = async (req, res, next) => {
 // Update a user
 const updateUser = async (req, res, next) => {
     const userId = req.params.id;
-    const { name, username, password, email, role } = req.body;
+    const { username, censusNo, role } = req.body;
     let user;
     try {
-        user = await User.findByIdAndUpdate(userId, { name, username, password, email, role }, { new: true, runValidators: true });
+        user = await User.findByIdAndUpdate(userId, { username, censusNo, role }, { new: true, runValidators: true });
     } catch (err) {
         console.log(err);
         return res.status(500).json({ message: "Error updating user", error: err.message });
