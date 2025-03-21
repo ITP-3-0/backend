@@ -1,4 +1,11 @@
 const User = require("../Models/UserModel");
+var admin = require("firebase-admin");
+
+var serviceAccount = require("../secrets/e-guru-ticketing-system-firebase-adminsdk-fbsvc-5d1b85e20e.json");
+
+const app = admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+});
 
 // Display all users
 const getAllUsers = async (req, res, next) => {
@@ -77,21 +84,23 @@ const updateUser = async (req, res, next) => {
 };
 
 //delete a user
+// Need to use the Firebase Admin SDK to delete a user
 const deleteUser = async (req, res, next) => {
     const userId = req.params.id;
     let user;
     try {
         user = await User.findByIdAndDelete(userId);
+        if (!user) {
+            return res.status(404).json({ message: "No user found" }); // Exit after sending response
+        }
+        // Delete user from Firebase
+        await app.auth().deleteUser(userId);
     } catch (err) {
         console.log(err);
+        return res.status(500).json({ message: "Error deleting user", error: err.message }); // Exit after sending response
     }
 
-    // If no user is found, return a 404 status code
-    if (!user) {
-        res.status(404).json({ message: "No user found" });
-    }
-
-    return res.status(200).json({ message: "User deleted successfully" });
+    return res.status(200).json({ message: "User deleted successfully" }); // Final response
 };
 
 module.exports = {
