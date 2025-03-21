@@ -5,6 +5,7 @@ require("dotenv").config();
 const userRouter = require("./Routes/UserRoutes.js");
 const notificationRouter = require("./Routes/NotificationRoutes.js");
 const ticketRouter = require("./Routes/RaisingRoutes.js");
+const schoolRoutes = require('./routes/schoolRoutes');
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.use(express.json());
 app.use("/users", userRouter);
 app.use("/tickets", ticketRouter);
 app.use("/notifications", notificationRouter);
+app.use('/api/schools', schoolRoutes);
 
 app.get("/", (req, res) => {
     res.send(`
