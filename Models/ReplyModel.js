@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const ReplySchema = new Schema({
     relatedTickets: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Ticket",
+        ref: "RaisingModel",
         required: true,
     },
     description: {

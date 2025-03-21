@@ -4,7 +4,7 @@ const ReplyController = require("../Controllers/ReplyController");
 
 replyRouter.get("/", ReplyController.getAllReplies);
 replyRouter.delete("/:id", ReplyController.deleteReply);
-replyRouter.put("/:id", ReplyController.updateReply);
+replyRouter.patch("/:id", ReplyController.updateReply);
 replyRouter.get("/:id", ReplyController.getReplyById);
 replyRouter.post("/", ReplyController.addReply);
 
