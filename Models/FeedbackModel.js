@@ -3,7 +3,8 @@ const Schema = mongoose.Schema;
 
 const FeedbackSchema = new Schema({
     userId: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId, // Use ObjectId for relational mapping
+        ref: "UserModel", // Reference the UserModel
         required: true,
     },
     feedbackText: {

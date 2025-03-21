@@ -1,4 +1,5 @@
 const Feedback = require("../Models/FeedbackModel");
+const mongoose = require("mongoose");
 
 // Get all feedback
 const getAllFeedback = async (req, res, next) => {
@@ -17,6 +18,9 @@ const getAllFeedback = async (req, res, next) => {
 // Add new feedback
 const addFeedback = async (req, res, next) => {
     const { userId, feedbackText, rating } = req.body;
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+        return res.status(400).json({ message: "Invalid userId" });
+    }
     try {
         const feedback = new Feedback({ userId, feedbackText, rating });
         const savedFeedback = await feedback.save();
