@@ -108,7 +108,7 @@ const updateNotification = async (req, res, next) => {
     let notification;
     try {
         notification = await Notification.findById(notificationId);
-        notification.title = title;
+        notification.title = title + " (Edited)";
         notification.description = description;
         await notification.save();
     } catch (err) {
